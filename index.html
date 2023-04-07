@@ -1,19 +1,57 @@
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
+body {
+background-color: white;
+}
+.card {
+width: 75px;
+height: 125px;
 
+background-color: white;
+margin: 10px;
+display: inline-block;
+cursor: pointer;
+border-radius: 3px;
+box-shadow: 0px 0px 10px 3px #4A4A4A ;
+}
+.cart-style_1 {
+background-image: linear-gradient(black, gray, white);
+}
+.card:hover{
+animation-name: onbox;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+}
+@keyframes onbox {
+animation: normal;
+from {}
+to {transform: rotateY(180deg);}
+} 
 </style>
 <script type="text/javascript">
+function GameArea() {
 
+for (let i = 1 ; i < 101 ; i++) {
+let box;
+box = document.createElement("div");
+box.className = ("card cart-style_1");
+box.id = ("card_" + i);
+document.getElementById("content").appendChild(box);
 
-</script>  
+}
+
+}
+</script>
 </head>
 
 <body onload="javascript:GameArea();">
+<div id="content">
 
+</div>
 
 </body>
 </html>
