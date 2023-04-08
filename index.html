@@ -1,111 +1,167 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<style type="text/css">
-body {
-background-color: white;
-}
-#header {
-width: 100%;
-padding:5px;
-position: fixed;
-top: 0;
-left: 0;
-z-index: 10;
-background-color:#DADADA;
-box-shadow: 0 0 10px 0px gray;
-}
-form {
-display: inline-block;
-}
-#content {
-width:80%;
-height: calc(100vh - 20px);
-margin: auto;
-margin-top:40px;
-text-align: center;
-display: flex;
-align-items: flex-start;
-}
-#content_inner {
-}
-.card {
-width: 75px;
-height: 125px;
-background-color: white;
-margin: 10px;
-display: inline-block;
-cursor: pointer;
-border-radius: 3px;
-box-shadow: 0px 0px 5px 0px #4A4A4A ;
-}
-.card-style_1 {
-background-image: linear-gradient(#E6E6E6 1%, #ffffff 45%, #E6E6E6 46%, #ffffff);
-}
-.card-style_1:hover {
-background-image: linear-gradient(#007AB9 1%, #09A9FF 45%, #007AB9 46%);
-}
-.card-style_2 {
-background-image: linear-gradient(#E6E6E6 1%, #ffffff 45%, #E6E6E6 46%, #ffffff);
-}
-.card-style_2:hover {
-background-image: linear-gradient(#DC0000 1%, #FF4848 45%, #DC0000 46%);
-}
-
-/*.card:hover{
-animation-name: onbox;
-  animation-duration: 1s;
-  animation-iteration-count: 1;
-  animation-fill-mode: both;
-}
-@keyframes onbox {
-animation: normal;
-from {}
-to {transform: rotateY(180deg);}
-}*/
-</style>
-<script type="text/javascript">
-function GameArea(){
-let cardsQuantity = document.getElementById("cards_quantity").value;
-if(cardsQuantity < 2 || cardsQuantity > 20 || cardsQuantity % 2 != 0) {
-alert("Only even numbers from 2 to 20 are allowed.");
-exit;
-}
-
-document.getElementById("content_inner").innerHTML="";
-let style = document.getElementById("style").value;
- 
-for (let i = 1 ; i <= cardsQuantity ; i++) {
-let box;
-box = document.createElement("div");
-box.className = ("card card-style_" + style);
-box.id = ("card_" + i);
-document.getElementById("content_inner").appendChild(box);
-}
-}
-$(document).ready(function(){
-$("button").on("click", function() {
-GameArea();
-});
-
-
-
-
-
-});
-</script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+    </script>
+    
+    <style type="text/css">
+        body {
+        background-color: white;
+        background-image: url('src/bg/1.jpg');
+        background-repeat: repeat;
+        }
+        #header {
+        width: 100%;
+        padding:5px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        background-color:#DADADA;
+        box-shadow: 0 0 10px 0px gray;
+        }
+        form {
+        display: inline-block;
+        }
+        #content {
+        width:80%;
+        height: calc(100vh - 60px);
+        margin: auto;
+        margin-top:40px;
+        text-align: center;
+        display: flex;
+        align-items: flex-start;
+        }
+        #content_inner {
+        margin: auto;
+        }
+        .card {
+        width: 75px;
+        height: 125px;
+        background-color: white;
+        margin: 10px;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 6px;
+        box-shadow: 0px 0px 5px 0px #4A4A4A ;
+        }
+        .card-style_1 {
+        background-image: linear-gradient(#E6E6E6 1%, #ffffff 45%, #E6E6E6 46%, #ffffff);
+        }
+        .card-style_1:hover {
+        background-image: linear-gradient(#007AB9 1%, #09A9FF 45%, #007AB9 46%);
+        }
+        .card-style_2 {
+        background-image: linear-gradient(#E6E6E6 1%, #ffffff 45%, #E6E6E6 46%, #ffffff);
+        }
+        .card-style_2:hover {
+        background-image: linear-gradient(#DC0000 1%, #FF4848 45%, #DC0000 46%);
+        }
+        
+        .card-rotate_show{
+        animation-name: cardshow;
+        animation-duration: 1s;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+        }
+        .card-rotate_hide{
+        animation-name: cardhide;
+        animation-duration: 1s;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+        }
+        @keyframes cardshow {
+        animation: normal;
+        0% {}
+        100% {transform: rotateY(180deg);background-image: none;}
+        }
+        @keyframes cardhide {
+        animation: both;
+        0% {background-image: none;}
+        100% {transform: rotateY(180deg);}
+        }
+    </style>
+    
+    <script type="text/javascript">
+        function GameArea(){
+        let cardsQuantity = document.getElementById("cards_quantity").value;
+        let bg = document.getElementById("bg").value;
+        let urlBg = "src/bg/" + bg + ".jpg";
+        document.body.style.backgroundImage = ("url("+urlBg+")");
+        if(cardsQuantity < 2 || cardsQuantity > 20 || cardsQuantity % 2 != 0) {
+            alert("Only even numbers from 2 to 20 are allowed.");
+            exit;
+            }
+            
+            document.getElementById("content_inner").innerHTML="";
+            let style = document.getElementById("style").value;
+            
+            for (let i = 1 ; i <= cardsQuantity ; i++) {
+            let box;
+            box = document.createElement("div");
+            box.className = ("card card-style_" + style);
+            box.id = ("card_" + i);
+            box.addEventListener("click", cardClick);
+            document.getElementById("content_inner").appendChild(box);
+            }
+            }
+            $(document).ready(function(){
+            $("button").on("click", function() {
+            GameArea();
+            });
+            
+            });
+            function cardClick() {
+            let getClass = this.className;
+            if(getClass.includes("card-rotate_show") == true) {
+            let getClass2 = getClass.replace('card-rotate_show','');
+            this.className = (getClass2 + " card-rotate_hide"); 
+            } else if (getClass.includes("card-rotate_hide") == true) {
+            let getClass2 = getClass.replace('card-rotate_hide','');
+            this.className = (getClass2 + " card-rotate_show");
+            } else {
+            let getClass2 = getClass.replace('card-rotate_show','');
+            this.className = (getClass2 + " card-rotate_show");
+            }
+            
+            
+            
+            
+            }
+            
+            
+            </script>
 </head>
 
 <body onload="javascript:GameArea();">
-<div id="header">Style: <form><select name="style" id="style"><option value="1">gray/blue</option><option value="2">gray/red</option></select>&nbsp;&nbsp;Quantity: <input type="number" name="cards_quantity" id="cards_quantity" min="2" max="20" value="10" step="2">&nbsp;<button type="button" > Save </button></form></div>
-
-
-<div id="content">
-<div id="content_inner">
-
-</div>
-</div>
+    
+    <div id="header">
+        
+        
+        <form>
+            Card Style: <select name="bg" id="bg">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            Style: <select name="style" id="style">
+                <option value="1">gray/blue</option>
+                <option value="2">gray/red</option>
+            </select>
+            &nbsp;&nbsp;Quantity:
+            <input type="number" name="cards_quantity" id="cards_quantity" min="2" max="20" value="10" step="2">&nbsp;
+            <button type="button" >Save</button>
+        </form>
+        
+    </div>
+    
+    <div id="content">
+        
+        <div id="content_inner">
+        </div>
+        
+    </div>
+    
 </body>
 </html>
