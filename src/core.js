@@ -24,32 +24,61 @@ function GameArea() {
         box.className = ("card card-style_" + style);
         box.id = ("card_" + i);
         boxIn = document.createElement("div");
-        boxIn.className = ("card_inner");
-        boxIn.innerHTML = (Pairs[i-1]);
+        boxIn.className = ("card-inner");
+        boxInSpan = document.createElement("span");
+        boxInSpan.className = ("card-inner-span");
+        boxInSpan.innerHTML = (Pairs[i-1]);
+        
+        boxInSpanStart = document.createElement("span");
+        boxInSpanStart.className = ("card-inner-span-site");
+        boxInSpanStart.innerHTML = ("|");
+        boxInSpanEnd = document.createElement("span");
+        boxInSpanEnd.className = ("card-inner-span-site");
+        boxInSpanEnd.innerHTML = ("|");
+        
         box.addEventListener("click", cardClick);
+        boxIn.appendChild(boxInSpanStart);
+        boxIn.appendChild(boxInSpan); 
+        boxIn.appendChild(boxInSpanEnd);  
         box.appendChild(boxIn);        
         document.getElementById("content_inner").appendChild(box);
     }
     document.getElementById("result").innerHTML="0";
     document.getElementById("play-time").innerHTML="0";
-    let Interval = setInterval(startTimer, 1000);
+
     
 }
 function startTimer(){
-let t = document.getElementById("play-time").innerHTML;
-document.getElementById("play-time").innerHTML = parseFloat(t) + 1;
 
+if(document.getElementsByClassName("card").length < 1) {
+
+
+} else {
+
+let t = document.getElementById("play-time").innerHTML;
+let tt = parseFloat(t) + 1;
+document.getElementById("play-time").innerHTML = tt;
+
+let p = document.getElementById("result").innerHTML;
+if(parseFloat(p) != 0) {
+let spp = tt/parseFloat(p);
+
+document.getElementById("sec-per-pair").innerHTML = spp.toFixed(2);
 
 }
 
+}
 
+}
+const intervalId = setInterval(startTimer, 1000);
 
 $(document).ready(function() {
     $("button").on("click", function() {
         GameArea();
     }
     );
-}
+    }
+
 );
 
 function cardClick() {
@@ -69,12 +98,16 @@ function cardClick() {
     if(getClass.includes("card-rotate_show") == true) {
         let getClass2 = getClass.replace('card-rotate_show','');
         this.className = (getClass2 + " card-rotate_hide");
+        this.getElementsByClassName("card-inner-span")[0].style.fontSize= "1px";
+        
     } else if (getClass.includes("card-rotate_hide") == true) {
-        let getClass2 = getClass.replace('card-rotate_hide','');
+        let getClass2 = getClass.replace(' card-rotate_hide','');
         this.className = (getClass2 + " card-rotate_show");
+        this.getElementsByClassName("card-inner-span")[0].style.fontSize= "20px";
     } else {
-        let getClass2 = getClass.replace('card-rotate_show','');
+        let getClass2 = getClass.replace(' card-rotate_show','');
         this.className = (getClass2 + " card-rotate_show");
+        this.getElementsByClassName("card-inner-span")[0].style.fontSize= "20px";
     }
     
     let shown2 = document.getElementsByClassName("card-rotate_show"); 
@@ -99,7 +132,14 @@ function cardClick() {
          
          
          
-          if(document.getElementsByClassName("card").length == 0){/*alert("no cards");*/}
+          if(document.getElementsByClassName("card").length == 0){
+          
+          
+          
+          clearInterval(interval);
+          
+          
+          /*alert("no cards");*/}
          
          });
       

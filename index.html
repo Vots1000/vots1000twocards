@@ -11,6 +11,7 @@
         background-color: white;
         background-image: url('src/bg/1.jpg');
         background-repeat: repeat;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
         }
         #header {
         width: 100%;
@@ -59,6 +60,8 @@
         cursor: pointer;
         border-radius: 6px;
         box-shadow: 0px 0px 5px 0px #4A4A4A ;
+        color: transparent;
+        font-size: 20px;
         }
         .card-place {
         width: 75px;
@@ -70,11 +73,12 @@
         border-radius: 6px;
         box-shadow: 0px 0px 5px 0px #4A4A4A ;
         }
-        .card_inner {
-            display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
+        .card-inner {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        font-size: 1px;
         }
         .card-style_1 {
         background-image: linear-gradient(#E6E6E6 1%, #ffffff 45%, #E6E6E6 46%, #ffffff);
@@ -102,41 +106,45 @@
         animation-fill-mode: both;
         }
         .card-clear{
-        animation-name: cardclear;
-        animation-duration: 1s;
+                animation-name: cardclear;
+        animation-duration: 4s;
         animation-iteration-count: 1;
         animation-fill-mode: none;
         }
         @keyframes cardshow {
         0% {transform: rotateY(180deg);}
-        100% {background-image: none;background-color: #48FF73;}
+        50% {color: transparent;font-size:20px}
+        /*51% {color: #000000;}*/
+        100% {background-image: none;background-color: #48FF73;color: #000000;font-size:20px}
         }
         @keyframes cardhide {
         0% {transform: rotateY(180deg);background-image: none;background-color: #48FF73;}
         100% {}
         }
         @keyframes cardclear {
-        0% {}
-        99% {visibility:hidden;}
-        100% {display:none;}
+        from {}
+        to {visibility:hidden;}
         }
     </style>
-
-
 </head>
 
 <body onload="javascript:GameArea();">
     <div id="header">
         <form>
             Table style: <select name="bg" id="bg">
-                <option value="1">1</option>
-                <option value="2">2</option>
+                <option value="1">Black</option>
+                <option value="2">Material</option>
+                <option value="3">Light</option>
+                <option value="4">Paper</option>
+                <option value="5">Blue</option>
+                <option value="6">Red</option>
+                
             </select>
             Cards style: <select name="style" id="style">
                 <option value="1">gray/blue</option>
                 <option value="2">gray/red</option>
             </select>
-            &nbsp;&nbsp;Quantity:
+            &nbsp;&nbsp;Cards quantity:
             <input type="number" name="cards_quantity" id="cards_quantity" min="2" max="40" value="10" step="2">&nbsp;
             <button type="button" >Start new game</button>
         </form>
