@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
     </script>
-    
+<script src="src/core.js"></script> 
     <style type="text/css">
         body {
         background-color: white;
@@ -59,12 +59,12 @@
         .card-style_2:hover {
         background-image: linear-gradient(#DC0000 1%, #FF4848 45%, #DC0000 46%);
         }
-        
+
         .card-rotate_show{
         animation-name: cardshow;
         animation-duration: 1s;
         animation-iteration-count: 1;
-        animation-fill-mode: both;
+        animation-fill-mode: forwards;
         }
         .card-rotate_hide{
         animation-name: cardhide;
@@ -72,74 +72,35 @@
         animation-iteration-count: 1;
         animation-fill-mode: both;
         }
+        .card-clear{
+        animation-name: cardclear;
+        animation-duration: 1s;
+        animation-iteration-count: 1;
+        animation-fill-mode: none;
+        }
         @keyframes cardshow {
-        animation: normal;
         0% {}
-        100% {transform: rotateY(180deg);background-image: none;}
+        100% {transform: rotateY(180deg);background-image: none;background-color: #48FF73;}
         }
         @keyframes cardhide {
-        animation: both;
-        0% {background-image: none;}
+        0% {background-image: none;background-color: #48FF73;}
         100% {transform: rotateY(180deg);}
         }
+        @keyframes cardclear {
+        0% {}
+        99% {visibility:hidden;}
+        100% {display:none;}
+        }
     </style>
-    
-    <script type="text/javascript">
-        function GameArea(){
-        let cardsQuantity = document.getElementById("cards_quantity").value;
-        let bg = document.getElementById("bg").value;
-        let urlBg = "src/bg/" + bg + ".jpg";
-        document.body.style.backgroundImage = ("url("+urlBg+")");
-        if(cardsQuantity < 2 || cardsQuantity > 20 || cardsQuantity % 2 != 0) {
-            alert("Only even numbers from 2 to 20 are allowed.");
-            exit;
-            }
-            
-            document.getElementById("content_inner").innerHTML="";
-            let style = document.getElementById("style").value;
-            
-            for (let i = 1 ; i <= cardsQuantity ; i++) {
-            let box;
-            box = document.createElement("div");
-            box.className = ("card card-style_" + style);
-            box.id = ("card_" + i);
-            box.addEventListener("click", cardClick);
-            document.getElementById("content_inner").appendChild(box);
-            }
-            }
-            $(document).ready(function(){
-            $("button").on("click", function() {
-            GameArea();
-            });
-            
-            });
-            function cardClick() {
-            let getClass = this.className;
-            if(getClass.includes("card-rotate_show") == true) {
-            let getClass2 = getClass.replace('card-rotate_show','');
-            this.className = (getClass2 + " card-rotate_hide"); 
-            } else if (getClass.includes("card-rotate_hide") == true) {
-            let getClass2 = getClass.replace('card-rotate_hide','');
-            this.className = (getClass2 + " card-rotate_show");
-            } else {
-            let getClass2 = getClass.replace('card-rotate_show','');
-            this.className = (getClass2 + " card-rotate_show");
-            }
-            
-            
-            
-            
-            }
-            
-            
-            </script>
+
+
 </head>
 
 <body onload="javascript:GameArea();">
-    
+
     <div id="header">
-        
-        
+
+
         <form>
             Card Style: <select name="bg" id="bg">
                 <option value="1">1</option>
@@ -153,15 +114,15 @@
             <input type="number" name="cards_quantity" id="cards_quantity" min="2" max="20" value="10" step="2">&nbsp;
             <button type="button" >Save</button>
         </form>
-        
+
     </div>
-    
+
     <div id="content">
-        
+
         <div id="content_inner">
         </div>
-        
+
     </div>
-    
+
 </body>
 </html>
