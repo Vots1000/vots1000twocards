@@ -3,8 +3,8 @@ function GameArea() {
     let bg = document.getElementById("bg").value;
     let urlBg = "src/bg/" + bg + ".jpg";
     document.body.style.backgroundImage = ("url("+urlBg+")");
-    if(cardsQuantity < 2 || cardsQuantity > 20 || cardsQuantity % 2 != 0) {
-        alert("Only even numbers from 2 to 20 are allowed.");
+    if(cardsQuantity < 2 || cardsQuantity > 40 || cardsQuantity % 2 != 0) {
+        alert("Only even numbers from 2 to 40 are allowed.");
         exit;
     }
 
@@ -30,7 +30,20 @@ function GameArea() {
         box.appendChild(boxIn);        
         document.getElementById("content_inner").appendChild(box);
     }
+    document.getElementById("result").innerHTML="0";
+    document.getElementById("play-time").innerHTML="0";
+    let Interval = setInterval(startTimer, 1000);
+    
 }
+function startTimer(){
+let t = document.getElementById("play-time").innerHTML;
+document.getElementById("play-time").innerHTML = parseFloat(t) + 1;
+
+
+}
+
+
+
 $(document).ready(function() {
     $("button").on("click", function() {
         GameArea();
@@ -73,9 +86,31 @@ function cardClick() {
          
          
          this.addEventListener("animationend", (event) => { 
-         document.getElementById(divId1).remove();document.getElementById(divId2).remove();});
-        }
-        
+         document.getElementById(divId1).style.visibility = "hidden";
+         document.getElementById(divId1).className = ("card-place");
+         document.getElementById(divId2).style.visibility = "hidden";
+         document.getElementById(divId2).className = ("card-place");
+         
+         /* document.getElementById(divId1).remove();
+         
+         document.getElementById(divId2).remove();*/
+         
+         
+         
+         
+         
+          if(document.getElementsByClassName("card").length == 0){/*alert("no cards");*/}
+         
+         });
+      
+      let result = document.getElementById("result").innerHTML;  
+      document.getElementById("result").innerHTML = parseFloat(result) + 1
+    
+    
+       
+    }
+      
+      
   
     }
     
