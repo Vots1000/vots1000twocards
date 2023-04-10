@@ -125,6 +125,13 @@
         .card-style_2:hover {
         background-image: linear-gradient(#DC0000 1%, #FF4848 45%, #DC0000 46%);
         }
+        .card-style_3 {
+        background-image: url('src/cards/1/0.jpg');border: 3px solid white;
+        }
+        .card-style_3:hover {
+        background-image: url('src/cards/1/0.jpg');border: 3px solid red;
+        }
+
 
         .card-rotate_show{
         animation-name: cardshow;
@@ -196,6 +203,7 @@
     
     
     </style>
+    <title>Two cards</title>
 </head>
 
 <body onload="javascript:GameArea();">
@@ -213,6 +221,7 @@
             Cards style: <select name="style" id="style">
                 <option value="1">Raw modern gray/blue</option>
                 <option value="2">Raw modern gray/red</option>
+                <option value="3">3</option>
             </select>
             &nbsp;&nbsp;Cards quantity:
             <input type="number" name="cards_quantity" id="cards_quantity" min="2" max="104" value="2" step="2">&nbsp;
