@@ -4,6 +4,29 @@ function changeBg() {
     document.body.style.backgroundImage = ("url("+urlBg+")");
 }
 
+function changeStyle() {
+    let style = document.getElementById("style").value;
+    let cards = document.getElementsByClassName("card");
+    let cardsQ = cards.length;
+    for (let i = 0; i < cardsQ; i++) {
+        for (let i2 = 1; i2 <= 3; i2++) {
+         cards[i].classList.remove("card-style_" + i2);
+        }
+        cards[i].classList.add("card-style_" + style);
+    }
+    let shown = document.getElementsByClassName("card-rotate_show180");
+    let shownL = shown.length;
+    if(shownL >= 1) {
+        for (let i = 0 ; i < shownL ; i++) {
+            let shownCard = shown[0];
+            let shownCardId = shownCard.id;
+                document.getElementById(shownCardId).classList.remove("card-rotate_show180");
+                document.getElementById(shownCardId).classList.add("card-rotate_hide90");
+                hideCard(shownCardId);
+        }
+    }    
+}
+
 function GameArea() {
     let cardsQuantity = document.getElementById("cards_quantity").value;
     changeBg();
@@ -49,17 +72,18 @@ function GameArea() {
     document.getElementById("sec-per-pair").innerHTML="-";
 }
 function startTimer(){
-    if(document.getElementsByClassName("card").length < 1) {
-
+    let tt;
+    if(document.getElementsByClassName("card").length >= 1) {
+        let t = document.getElementById("play-time").innerHTML; 
+        tt = parseFloat(t) + 1;
+        document.getElementById("play-time").innerHTML = tt; 
     } else {
-        let t = document.getElementById("play-time").innerHTML;
-        let tt = parseFloat(t) + 1;
-        document.getElementById("play-time").innerHTML = tt;
-        let p = document.getElementById("result").innerHTML;
-        if(parseFloat(p) != 0) {
-            let spp = tt/parseFloat(p);
-            document.getElementById("sec-per-pair").innerHTML = spp.toFixed(2);
-        }
+        tt = document.getElementById("play-time").innerHTML;
+    }
+    let p = document.getElementById("result").innerHTML;
+    if(parseFloat(p) != 0) {
+        let spp = tt/parseFloat(p);
+        document.getElementById("sec-per-pair").innerHTML = spp.toFixed(2);
     }
 }
 
@@ -71,6 +95,9 @@ $(document).ready(function() {
     });
     $("#bg").on("change", function() {
         changeBg();
+    });
+    $("#style").on("change", function() {
+        changeStyle();
     });
 });
 
@@ -119,12 +146,17 @@ function showCard(cardId) {
  
         if(document.getElementById(cardId).className.includes("card-rotate_show90")) {
 
-
-            /*document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/1.jpg')");*/
-
+            if(document.getElementById(cardId).className.includes("card-style_3")) {
+            document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "#000000";
+            document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "0px";
+            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("#ffffff");
+            let cardno = document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].innerText;
+            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/" + cardno +".jpg')");
+            } else {
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "#000000";
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "40px";
             document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("#48FF73");
+            }
             document.getElementById(cardId).classList.remove("card-rotate_show90");
             document.getElementById(cardId).classList.add("card-rotate_show180");
             checkPairs(cardId);
@@ -173,7 +205,7 @@ function checkPairs(cardId) {
 function gameEnd() {
     let vTime = document.getElementById("play-time").innerHTML;
     let vResult = document.getElementById("result").innerHTML;
-    let vSPP = document.getElementById("sec-per-pair").innerHTML;
+    let vSPP = parseFloat(vTime)/parseFloat(vResult);
     let vCardsNumber = document.getElementById("cards_quantity").value;
     let vPairsNumber = parseFloat(vCardsNumber)/2;
     endBox = document.createElement("div");
@@ -188,7 +220,7 @@ function gameEnd() {
     endBoxInner.appendChild(endBoxInnerHead);
     endBoxInnerBody = document.createElement("div");
     endBoxInnerBody.id = ("end-box-inner_body");
-    endBoxInnerBody.innerText = ("Time: " + vTime + "s | Pairs: " + vResult + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP);
+    endBoxInnerBody.innerText = ("Time: " + vTime + "s | Pairs: " + vResult + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP.toFixed(2));
     endBoxInner.appendChild(endBoxInnerBody);
     document.body.appendChild(endBox);
 }
