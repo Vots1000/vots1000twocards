@@ -3,13 +3,14 @@ function changeBg() {
     let urlBg = "src/bg/" + bg + ".jpg";
     document.body.style.backgroundImage = ("url("+urlBg+")");
 }
+
 function GameArea() {
     let cardsQuantity = document.getElementById("cards_quantity").value;
     changeBg();
     if(cardsQuantity < 4 || cardsQuantity > 104 || cardsQuantity % 2 != 0) {
         alert("Only even numbers from 2 to 104 are allowed.");
         exit;
-    }
+    }    
     document.getElementById("content_inner").innerHTML="";
     let style = document.getElementById("style").value;
     const cardsPairs = [];
@@ -71,8 +72,6 @@ $(document).ready(function() {
     $("#bg").on("change", function() {
         changeBg();
     });
-
-
 });
 
 function cardClick() {
@@ -113,8 +112,7 @@ function cardClick() {
         this.classList.add("card-rotate_show90");
         showCard(this.id);
     }
-
-    }
+}
     
 function showCard(cardId) {
     document.getElementById(cardId).addEventListener("animationend", (event) => {
@@ -138,16 +136,9 @@ function hideCard(cardId) {
     document.getElementById(cardId).addEventListener("animationend", (event) => {
  
         if(document.getElementById(cardId).className.includes("card-rotate_hide90")) {
-
-
-            /*document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/1.jpg')");*/
-
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "transparent";
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "0px";
-            
-            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("blue");
-            
-            
+            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("transparent");
             document.getElementById(cardId).classList.remove("card-rotate_hide90");
             document.getElementById(cardId).classList.add("card-rotate_hide180");
             checkPairs(cardId);
