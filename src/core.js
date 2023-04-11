@@ -106,9 +106,10 @@ function cardClick() {
     let shown = document.getElementsByClassName("card-rotate_show180");
     let shownL = shown.length;
     let thisId = this.id;
+    let shownTwo = false;
     if(shownL == 2) {
         let shownCard = shown[0];
-        let shownTwo = true;
+        shownTwo = true;
         for (let i = 0 ; i < shownL ; i++) {
             let shownCardId = shownCard.id;
             if ( shownCardId != thisId ) {
@@ -121,7 +122,7 @@ function cardClick() {
             }
         }
     } else {
-    let shownTwo = false;
+    shownTwo = false;
     }
 
     let getClass = this.className;
@@ -171,6 +172,7 @@ function hideCard(cardId) {
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "transparent";
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "0px";
             document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("transparent");
+            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = "none";
             document.getElementById(cardId).classList.remove("card-rotate_hide90");
             document.getElementById(cardId).classList.add("card-rotate_hide180");
             checkPairs(cardId);
