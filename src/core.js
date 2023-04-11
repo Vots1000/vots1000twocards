@@ -1,9 +1,12 @@
-function GameArea() {
-    let cardsQuantity = document.getElementById("cards_quantity").value;
+function changeBg() {
     let bg = document.getElementById("bg").value;
     let urlBg = "src/bg/" + bg + ".jpg";
     document.body.style.backgroundImage = ("url("+urlBg+")");
-    if(cardsQuantity < 2 || cardsQuantity > 104 || cardsQuantity % 2 != 0) {
+}
+function GameArea() {
+    let cardsQuantity = document.getElementById("cards_quantity").value;
+    changeBg();
+    if(cardsQuantity < 4 || cardsQuantity > 104 || cardsQuantity % 2 != 0) {
         alert("Only even numbers from 2 to 104 are allowed.");
         exit;
     }
@@ -46,7 +49,7 @@ function GameArea() {
 }
 function startTimer(){
     if(document.getElementsByClassName("card").length < 1) {
-    
+
     } else {
         let t = document.getElementById("play-time").innerHTML;
         let tt = parseFloat(t) + 1;
@@ -65,43 +68,103 @@ $(document).ready(function() {
     $("button").on("click", function() {
         GameArea();
     });
+    $("#bg").on("change", function() {
+        changeBg();
+    });
+
+
 });
 
 function cardClick() {
     let style = document.getElementById("style").value;
-    let shown = document.getElementsByClassName("card-rotate_show");
+    let shown = document.getElementsByClassName("card-rotate_show180");
     let shownL = shown.length;
+    let thisId = this.id;
     if(shownL == 2) {
+        let shownCard = shown[0];
+        let shownTwo = true;
         for (let i = 0 ; i < shownL ; i++) {
-            let shownCard = shown[0];
             let shownCardId = shownCard.id;
-            document.getElementById(shownCardId).className = ("card card-style_" + style + " card-rotate_hide" );
+            if ( shownCardId != thisId ) {
+                document.getElementById(shownCardId).classList.remove("card-rotate_show180");
+                document.getElementById(shownCardId).classList.add("card-rotate_hide90");
+                shownCard = shown[0];
+                hideCard(shownCardId);
+            } else {
+                shownCard = shown[1];
+            }
         }
+    } else {
+    let shownTwo = false;
     }
 
     let getClass = this.className;
-    if(getClass.includes("card-rotate_show") == true) {
-        let getClass2 = getClass.replace('card-rotate_show','');
-        this.className = (getClass2 + " card-rotate_hide");
-        this.getElementsByClassName("card-inner-span")[0].style.fontSize= "0px";
-
-    } else if (getClass.includes("card-rotate_hide") == true) {
-        let getClass2 = getClass.replace(' card-rotate_hide','');
-        this.className = (getClass2 + " card-rotate_show");
-        this.getElementsByClassName("card-inner-span")[0].style.fontSize= "40px";
+    if(getClass.includes("card-rotate_show180") == true && shownTwo == false) {
+        this.classList.remove("card-rotate_show180");
+        this.classList.add("card-rotate_hide90");
+        hideCard(this.id);
+    } else if (getClass.includes("card-rotate_show180") == true && shownTwo == true) {
+    
+    } else if (getClass.includes("card-rotate_hide180") == true) {
+        this.classList.remove("card-rotate_hide180");
+        this.classList.add("card-rotate_show90");
+        showCard(this.id);
     } else {
-        let getClass2 = getClass.replace(' card-rotate_show','');
-        this.className = (getClass2 + " card-rotate_show");
-        this.getElementsByClassName("card-inner-span")[0].style.fontSize= "40px";
+        this.classList.add("card-rotate_show90");
+        showCard(this.id);
     }
 
-    let shown2 = document.getElementsByClassName("card-rotate_show");
-    let shownL2 = shown.length;
+    }
+    
+function showCard(cardId) {
+    document.getElementById(cardId).addEventListener("animationend", (event) => {
+ 
+        if(document.getElementById(cardId).className.includes("card-rotate_show90")) {
+
+
+            /*document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/1.jpg')");*/
+
+            document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "#000000";
+            document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "40px";
+            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("#48FF73");
+            document.getElementById(cardId).classList.remove("card-rotate_show90");
+            document.getElementById(cardId).classList.add("card-rotate_show180");
+            checkPairs(cardId);
+        }
+    });
+}
+
+function hideCard(cardId) {
+    document.getElementById(cardId).addEventListener("animationend", (event) => {
+ 
+        if(document.getElementById(cardId).className.includes("card-rotate_hide90")) {
+
+
+            /*document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/1.jpg')");*/
+
+            document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "transparent";
+            document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "0px";
+            
+            document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundColor = ("blue");
+            
+            
+            document.getElementById(cardId).classList.remove("card-rotate_hide90");
+            document.getElementById(cardId).classList.add("card-rotate_hide180");
+            checkPairs(cardId);
+        }
+    });
+}
+
+
+function checkPairs(cardId) {
+    let shown2 = document.getElementsByClassName("card-rotate_show180");
+    let shownL2 = shown2.length;
+
     if(shownL2 == 2) {
-        if (shown2[0].innerHTML == shown2[1].innerHTML) {
+        if (shown2[0].getElementsByClassName("card-inner-span")[0].innerHTML == shown2[1].getElementsByClassName("card-inner-span")[0].innerHTML) {
         let divId1 = shown2[0].id;
         let divId2 = shown2[1].id;
-        this.addEventListener("animationend", (event) => {
+            document.getElementById(cardId).addEventListener("animationend", (event) => {
             document.getElementById(divId1).style.visibility = "hidden";
             document.getElementById(divId1).className = ("card-place");
             document.getElementById(divId2).style.visibility = "hidden";
@@ -111,12 +174,12 @@ function cardClick() {
             }
         });
         let result = document.getElementById("result").innerHTML;
-        document.getElementById("result").innerHTML = parseFloat(result) + 1
+        document.getElementById("result").innerHTML = parseFloat(result) + 1;
         }
     }
 }
+
 function gameEnd() {
-   
     let vTime = document.getElementById("play-time").innerHTML;
     let vResult = document.getElementById("result").innerHTML;
     let vSPP = document.getElementById("sec-per-pair").innerHTML;
@@ -137,8 +200,8 @@ function gameEnd() {
     endBoxInnerBody.innerText = ("Time: " + vTime + "s | Pairs: " + vResult + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP);
     endBoxInner.appendChild(endBoxInnerBody);
     document.body.appendChild(endBox);
-    
 }
+
 function closeEndBox() {
     document.getElementById("end-box").remove();
     GameArea();
