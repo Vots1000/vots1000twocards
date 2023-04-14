@@ -80,56 +80,28 @@ form {
     padding: 30px;
     margin: auto;
 }
-/*
-@media only screen and (max-width: 600px) , (max-height: 600px) {
-    .card {
-        width: 36px;
-        height: 55px;
-        background-color: white;
-        margin: 5px;
-        display: inline-block;
-        cursor: pointer;
-        border: 3px solid #ffffff;
-        border-radius: 3px;
-        box-shadow: 0px 0px 5px 0px #4A4A4A ;
-        color: transparent;
-        font-size: 40px;
-    }
-    .card-place {
-        width: 36px;
-        height: 55px;
-        background-color: white;
-        margin: 5px;
-        display: inline-block;
-        cursor: pointer;
-        border: 3px solid #ffffff;
-        border-radius: 3px;
-        box-shadow: 0px 0px 5px 0px #4A4A4A ;
-    }
+
+.card {
+    background-color: white;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 0px #4A4A4A ;
+    color: transparent;
+    font-size: 40px;
 }
 
-@media only screen and (min-width: 600px) , (min-height: 600px) {*/
-    .card {
-        background-color: white;
-        margin: 5px;
-        display: inline-block;
-        cursor: pointer;
-        border: 3px solid #ffffff;
-        border-radius: 3px;
-        box-shadow: 0px 0px 5px 0px #4A4A4A ;
-        color: transparent;
-        font-size: 40px;
-    }
-    .card-place {
-        background-color: white;
-        margin: 5px;
-        display: inline-block;
-        cursor: pointer;
-        border: 3px solid #ffffff;
-        border-radius: 3px;
-        box-shadow: 0px 0px 5px 0px #4A4A4A ;
-    }
-/*}*/
+.card-place {
+    background-color: white;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 0px #4A4A4A ;
+}
 
 .card-inner {
     display: flex;
@@ -157,11 +129,13 @@ form {
 
 .card-style_3 {
     background-image: url("cards/3/0.jpg");
+    background-size: 100%;
     border: 3px solid white;
 }
 
 .card-style_3:hover {
     background-image: url("cards/3/0a.jpg");
+    background-size: 100%;
     border: 3px solid white;
 }
 

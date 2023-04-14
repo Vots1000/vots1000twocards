@@ -1,8 +1,8 @@
 const intervalId = setInterval(startTimer, 1000);
 const cardMinHeight = 55;
 const cardMinWidth = 36;
-const cardMaxHeight = 110;
-const cardMaxWidth = 72;
+const cardMaxHeight = 110*2;
+const cardMaxWidth = 72*2;
 var viewH = window.innerHeight;
 var viewV = window.innerWidth;
 
@@ -116,20 +116,20 @@ $(window).resize(function() {
 
 function cardsScaling() {
     if( !document.getElementById("end-box") ) {
-        let cardWidth = 72;
-        let cardHeight = 110;
-        let cardGetWidth = document.getElementsByClassName("card")[0].style.width;
-        let cardGetHeight = document.getElementsByClassName("card")[0].style.height;
+        var cardWidth = cardMaxWidth;
+        var cardHeight = cardMaxHeight;
+        var cardGetWidth = document.getElementsByClassName("card")[0].style.width ?? cardMaxWidth;
+        var cardGetHeight = document.getElementsByClassName("card")[0].style.height ?? cardMaxHeight;
         if( !cardGetWidth || !cardGetHeight || cardGetWidth == '' || cardGetHeight == '' ) {
-            cardGetWidth = 72;
-            cardGetHeight = 110;
+            cardGetWidth = cardMaxWidth;
+            cardGetHeight = cardMaxHeight;
             for ( let i = 0 ; i < document.getElementsByClassName("card").length ; i++ ) {
-                document.getElementsByClassName("card")[i].style.width = "72px";
-                document.getElementsByClassName("card")[i].style.height = "110px";
+                document.getElementsByClassName("card")[i].style.width = (cardMaxWidth + "px");
+                document.getElementsByClassName("card")[i].style.height = (cardMaxHeight + "px");
             }
             for ( let i = 0 ; i < document.getElementsByClassName("card-place").length ; i++ ) {
-                document.getElementsByClassName("card-place")[i].style.width = "72px";
-                document.getElementsByClassName("card-place")[i].style.height = "110px";
+                document.getElementsByClassName("card-place")[i].style.width = (cardMaxWidth + "px");
+                document.getElementsByClassName("card-place")[i].style.height = (cardMaxHeight + "px");
             }
         } else {
             cardGetWidth = parseFloat(cardGetWidth.replace("px",""));
@@ -140,30 +140,26 @@ function cardsScaling() {
             var contentHeight = document.body.scrollHeight;
             var windowHeight = document.body.clientHeight;
             if ( contentHeight <= windowHeight ) {
-                if( cardGetWidth == 72 || cardGetHeight == 110 ) {
+                if ( cardGetWidth == cardMaxWidth || cardGetHeight == cardMaxHeight ) {
                     resizeDone = true;
-                } else if ( cardGetWidth > 72 || cardGetHeight > 110 ) {
-                    cardWidth = 72;
-                    cardHeight = 110;
+                } else if ( cardGetWidth > cardMaxWidth || cardGetHeight > cardMaxHeight ) {
                     for ( let i = 0 ; i < document.getElementsByClassName("card").length ; i++ ) {
-                        document.getElementsByClassName("card")[i].style.width = (cardWidth + "px");
-                        document.getElementsByClassName("card")[i].style.height = (cardHeight + "px");
+                        document.getElementsByClassName("card")[i].style.width = (cardMaxWidth + "px");
+                        document.getElementsByClassName("card")[i].style.height = (cardMaxHeight + "px");
                     }
                     for ( let i = 0 ; i < document.getElementsByClassName("card-place").length ; i++ ) {
-                        document.getElementsByClassName("card-place")[i].style.width = (cardWidth + "px");
-                        document.getElementsByClassName("card-place")[i].style.height = (cardHeight + "px");
+                        document.getElementsByClassName("card-place")[i].style.width = (cardMaxWidth + "px");
+                        document.getElementsByClassName("card-place")[i].style.height = (cardMaxHeight + "px");
                     }
                     resizeDone = true;
-                } else if ( (cardGetWidth < 72 || cardGetHeight < 110) && (document.body.clientHeight > viewH || document.body.clientWidth > viewV) ) {
-                    cardWidth = 72;
-                    cardHeight = 110;
+                } else if ( (cardGetWidth < cardMaxWidth || cardGetHeight < cardMaxHeight) && (document.body.clientHeight > viewH || document.body.clientWidth > viewV) ) {
                     for ( let i = 0 ; i < document.getElementsByClassName("card").length ; i++ ) {
-                        document.getElementsByClassName("card")[i].style.width = (cardWidth + "px");
-                        document.getElementsByClassName("card")[i].style.height = (cardHeight + "px");
+                        document.getElementsByClassName("card")[i].style.width = (cardMaxWidth + "px");
+                        document.getElementsByClassName("card")[i].style.height = (cardMaxHeight + "px");
                     }
                     for ( let i = 0 ; i < document.getElementsByClassName("card-place").length ; i++ ) {
-                        document.getElementsByClassName("card-place")[i].style.width = (cardWidth + "px");
-                        document.getElementsByClassName("card-place")[i].style.height = (cardHeight + "px");
+                        document.getElementsByClassName("card-place")[i].style.width = (cardMaxWidth + "px");
+                        document.getElementsByClassName("card-place")[i].style.height = (cardMaxHeight + "px");
                     }
                     resizeDone = true;
                     cardsScaling();
@@ -171,13 +167,9 @@ function cardsScaling() {
                    resizeDone = true;
                }
            } else if ( contentHeight > windowHeight ) {
-               if( cardGetWidth <= 36 || cardGetHeight <= 55 ) {
-                   cardWidth = 36;
-                   cardHeight = 55;
-                   resizeDone = true;
-               } else if ( cardWidth <= 36 || cardHeight <= 55 ) {
-                   cardWidth = 36;
-                   cardHeight = 55;
+               if( cardGetWidth <= cardMinWidth || cardGetHeight <= cardMinHeight ) {
+                   cardWidth = cardMinWidth;
+                   cardHeight = cardMinHeight;
                    resizeDone = true;
                } else {
                    cardWidth = cardWidth * 0.9;
