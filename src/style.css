@@ -112,19 +112,19 @@ form {
 }
 
 .card-style_1 {
-    background-image: linear-gradient(#007AB9 1%, #09A9FF 45%, #007AB9 46%);
+    background-image: linear-gradient(#007AB9 5%, #09A9FF 25%, #007AB9 85%);
 }
 
 .card-style_1:hover {
-    background-image: linear-gradient(#DC0000 1%, #FF4848 45%, #DC0000 46%);
+    background-image: linear-gradient(#DC0000 5%, #FF4848 25%, #DC0000 85%);
 }
 
 .card-style_2 {
-    background-image: linear-gradient(#681212 1%, #9b5656 45%, #681212 46%);
+    background-image: linear-gradient(#681212 5%, #9b5656 25%, #681212 85%);
 }
 
 .card-style_2:hover {
-    background-image: linear-gradient(#DC0000 1%, #FF4848 45%, #DC0000 46%);
+    background-image: linear-gradient(#DC0000 5%, #FF4848 25%, #DC0000 85%);
 }
 
 .card-style_3 {

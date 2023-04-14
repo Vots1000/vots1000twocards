@@ -96,8 +96,6 @@ function startTimer() {
     }
 }
 
-
-
 $(document).ready(function() {
     $("button").on("click", function() {
         GameArea();
