@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
   </script>
   <script src="src/core.js">
@@ -11,28 +13,70 @@
 </head>
 <body onload="javascript:GameArea();">
   <div id="header">
-    <form>
-      <span class="menu_label">Table style:</span>
-      <select name="bg" id="bg">
-        <option value="1">Black</option>
-        <option value="2">Material</option>
-        <option value="3">Light</option>
-        <option value="4">Paper</option>
-        <option value="5">Blue</option>
-        <option value="6">Red</option>
-      </select>
-      <span class="menu_label">Cards style:</span>
-      <select name="style" id="style">
-        <option value="1">Modern blue/red/green</option>
-        <option value="2">Modern red/green</option>
-        <option value="3">Classic</option>
-      </select>
-      <span class="menu_label">Cards quantity:</span>
-      <input type="number" name="cards_quantity" id="cards_quantity" min="4" max="104" value="4" step="2">&nbsp;
-      <button type="button" formaction="#" >Start new game</button>
-  </form> </div>
+    <div id="header_inner">
+      <div id="menu" class="hide-start">
+        <div id="menu_inner">
+          <div style="text-align: right"><div id="close_menu"><span>X</span></div></div>
+          <div style="text-decoration: underline #efefef;font-weight: bold;">MENU:</div>
+          <form>
+            <table>
+            <tr>
+              <td colspan="2" class="menu_main_label">
+                Graphic options
+              </td>
+            </tr>
+            <tr>
+              <td> <span class="menu_label">Table style:</span> </td>
+              <td>
+                <select name="bg" id="bg">
+                  <option value="1">Black</option>
+                  <option value="2">Material</option>
+                  <option value="3">Light</option>
+                  <option value="4">Paper</option>
+                  <option value="5">Blue</option>
+                  <option value="6">Red</option>
+                  <option value="7">Green</option>
+              </select> </td>
+            </tr>
+            <tr>
+              <td><span class="menu_label">Cards style:</span></td>
+              <td>
+                <select name="style" id="style">
+                  <option value="3">Classic</option>
+                  <option value="1">Modern blue/red/green</option>
+                  <option value="2">Modern red/green</option>
+              </select> </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="menu_main_label">
+                Game options
+              </td>
+            </tr>
+            <tr>
+              <td><span class="menu_label">Cards quantity:</span></td>
+              <td>
+                <select name="cards_quantity" id="cards_quantity">
+                  <script type="text/javascript">
+                    for ( let i = 2 ; i <= 52 ; i++ ) {
+                        let m = document.createElement("option");
+                        m.value = i*2;
+                        m.innerText = i*2;
+                        document.getElementById("cards_quantity").appendChild(m);
+                    }
+                  </script>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+              <button type="button" formaction="#">Start new game</button> </td>
+            </tr>
+            </table>
+      </form> </div> </div>
+      <div id="menu-button">MENU</div> </div> </div>
   <div id="content">
     <div id="content_inner"> </div> </div>
-  <div id="footer"> Play time: <span id="play-time">0</span>&nbsp;Result(pairs): <span id="result"></span>&nbsp;Seconds per pair <span id="sec-per-pair"></span> </div>
+  <div id="footer"> <span id="play-time-label">Play time:</span> <span id="play-time">0</span> <span id="result-label">Result(pairs):</span> <span id="result"></span> <span id="sec-per-pair-label">Seconds per pair</span> <span id="sec-per-pair">-</span> </div>
 </body>
 </html>

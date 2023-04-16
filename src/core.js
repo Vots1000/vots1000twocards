@@ -5,6 +5,9 @@ const cardMaxHeight = 110*2;
 const cardMaxWidth = 72*2;
 var viewH = window.innerHeight;
 var viewV = window.innerWidth;
+var GlobTimeS = 0;
+var GlobResultP = 0;
+var GlobSPP = 0;
 
 function changeBg() {
     let bg = document.getElementById("bg").value;
@@ -36,7 +39,13 @@ function changeStyle() {
 }
 
 function GameArea() {
+    GlobTimeS = 0;
+    GlobResultP = 0;
+    GlobSPP = 0;
     let cardsQuantity = document.getElementById("cards_quantity").value;
+    if ( cardsQuantity == "" ) {
+        cardsQuantity = 4;
+    }
     changeBg();
     if ( cardsQuantity < 4 || cardsQuantity > 104 || cardsQuantity % 2 != 0 ) {
         alert("Only even numbers from 4 to 104 are allowed.");
@@ -81,24 +90,24 @@ function GameArea() {
     document.getElementById("sec-per-pair").innerHTML="-";
 }
 function startTimer() {
-    let tt;
     if ( document.getElementsByClassName("card").length >= 1 ) {
-        let t = document.getElementById("play-time").innerHTML;
-        tt = parseFloat(t) + 1;
-        document.getElementById("play-time").innerHTML = tt;
-    } else {
-        tt = document.getElementById("play-time").innerHTML;
+        GlobTimeS++;
+        document.getElementById("play-time").innerText = GlobTimeS;
     }
-    let p = document.getElementById("result").innerHTML;
-    if ( parseFloat(p) != 0 ) {
-        let spp = tt/parseFloat(p);
-        document.getElementById("sec-per-pair").innerHTML = spp.toFixed(2);
+    if ( GlobResultP !== 0) {
+        let spp = GlobTimeS / GlobResultP;
+        document.getElementById("result").innerText = GlobResultP;
+        document.getElementById("sec-per-pair").innerText = spp.toFixed(2);
     }
 }
 
 $(document).ready(function() {
     $("button").on("click", function() {
         GameArea();
+        showMenu();
+    });
+    $("#menu-button").on("click", function() {
+        showMenu();
     });
     $("#bg").on("change", function() {
         changeBg();
@@ -106,13 +115,40 @@ $(document).ready(function() {
     $("#style").on("change", function() {
         changeStyle();
     });
+    $("#cards_quantity").on("change", function() {
+        GameArea();
+        showMenu();
+    });
+    $("#close_menu").on("click", function() {
+        showMenu();
+    });
 });
 
 $(window).resize(function() {
     cardsScaling();
 });
 
+function showMenu() {
+    var box = document.getElementById("menu");
+    var boxClass = box.className !== 'show' ? 'show' : 'hide';
+    if ( boxClass === 'hide' || !boxClass || boxClass === "" ) {
+        document.getElementById("menu").className = "hide";
+        document.getElementById("shadow_box").remove();
+        document.getElementById("menu-button").style.display = "inline-block";
+    } else if(boxClass === 'show') {
+        shadowBox = document.createElement("div");
+        shadowBox.id = ("shadow_box");
+        document.body.appendChild(shadowBox);
+        document.getElementById("menu").className = "show";
+        document.getElementById("menu-button").style.display = "none";
+    }
+}
+
+
 function cardsScaling() {
+    if( document.getElementById("shadow_box") ) {
+    document.getElementById("shadow_box").style.width = "100vh";
+    }
     if( !document.getElementById("end-box") ) {
         var cardWidth = cardMaxWidth;
         var cardHeight = cardMaxHeight;
@@ -239,6 +275,7 @@ function showCard(cardId) {
             let cardno = document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].innerText;
             document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/" + cardno +".jpg')");
             document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundSize = ("100%");
+            
             } else {
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "#000000";
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "40px";
@@ -253,7 +290,6 @@ function showCard(cardId) {
 
 function hideCard( cardId ) {
     document.getElementById(cardId).addEventListener("animationend", (event) => {
-
         if(document.getElementById(cardId).className.includes("card-rotate_hide90")) {
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "transparent";
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "0px";
@@ -284,16 +320,13 @@ function checkPairs( cardId ) {
                gameEnd();
             }
         });
-        let result = document.getElementById("result").innerHTML;
-        document.getElementById("result").innerHTML = parseFloat(result) + 1;
+        GlobResultP++;
         }
     }
 }
 
 function gameEnd() {
-    let vTime = document.getElementById("play-time").innerHTML;
-    let vResult = document.getElementById("result").innerHTML;
-    let vSPP = parseFloat(vTime)/parseFloat(vResult);
+    let vSPP = GlobTimeS / GlobResultP;
     let vCardsNumber = document.getElementById("cards_quantity").value;
     let vPairsNumber = parseFloat(vCardsNumber)/2;
     endBox = document.createElement("div");
@@ -308,7 +341,7 @@ function gameEnd() {
     endBoxInner.appendChild(endBoxInnerHead);
     endBoxInnerBody = document.createElement("div");
     endBoxInnerBody.id = ("end-box-inner_body");
-    endBoxInnerBody.innerText = ("Time: " + vTime + "s | Pairs: " + vResult + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP.toFixed(2));
+    endBoxInnerBody.innerText = ("Time: " + GlobTimeS + "s | Pairs: " + GlobResultP + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP.toFixed(2));
     endBoxInner.appendChild(endBoxInnerBody);
     document.body.appendChild(endBox);
 }
