@@ -6,46 +6,36 @@ const cardMaxWidth = 72*2;
 var viewH = window.innerHeight;
 var viewV = window.innerWidth;
 var GlobTimeS = 0;
+var GlobTimeM = 0;
 var GlobResultP = 0;
 var GlobSPP = 0;
 
-function changeBg() {
-    let bg = document.getElementById("bg").value;
-    let urlBg = "src/bg/" + bg + ".jpg";
-    document.body.style.backgroundImage = ("url("+urlBg+")");
-}
+$(document).ready(function() {
+    $("button").on("click", function() {
+        GameArea();
+        showMenu();
+    });
+    $("#menu-button").on("click", showMenu );
+    $("#bg").on("change", changeBg );
+    $("#style").on("change", changeStyle );
+    $("#cards_quantity").on("change", function() {
+        GameArea();
+        showMenu();
+    });
+    $("#close_menu").on("click", showMenu );
+});
 
-function changeStyle() {
-    let style = document.getElementById("style").value;
-    let cards = document.getElementsByClassName("card");
-    let cardsQ = cards.length;
-    for (let i = 0; i < cardsQ; i++) {
-        for (let i2 = 1; i2 <= 3; i2++) {
-            cards[i].classList.remove("card-style_" + i2);
-        }
-        cards[i].classList.add("card-style_" + style);
-    }
-    let shown = document.getElementsByClassName("card-rotate_show180");
-    let shownL = shown.length;
-    if ( shownL >= 1 ) {
-        for (let i = 0 ; i < shownL ; i++) {
-            let shownCard = shown[0];
-            let shownCardId = shownCard.id;
-                document.getElementById(shownCardId).classList.remove("card-rotate_show180");
-                document.getElementById(shownCardId).classList.add("card-rotate_hide90");
-                hideCard(shownCardId);
-        }
-    }
-}
+$(window).resize(function() {
+    areaScaling();
+});
 
 function GameArea() {
     GlobTimeS = 0;
+    GlobTimeM = 0;
     GlobResultP = 0;
     GlobSPP = 0;
     let cardsQuantity = document.getElementById("cards_quantity").value;
-    if ( cardsQuantity == "" ) {
-        cardsQuantity = 4;
-    }
+    cardsQuantity = cardsQuantity == "" ? 4 : cardsQuantity;
     changeBg();
     if ( cardsQuantity < 4 || cardsQuantity > 104 || cardsQuantity % 2 != 0 ) {
         alert("Only even numbers from 4 to 104 are allowed.");
@@ -84,49 +74,61 @@ function GameArea() {
         box.appendChild(boxIn);
         document.getElementById("content_inner").appendChild(box);
     }
-    cardsScaling();
-    document.getElementById("result").innerHTML="0";
-    document.getElementById("play-time").innerHTML="0";
+    areaScaling();
+    document.getElementById("play-time-min").innerText = "00";
+    document.getElementById("play-time-sec").innerText = "00";
+    document.getElementById("result").innerText = "0";
     document.getElementById("sec-per-pair").innerHTML="-";
 }
+
+function changeBg() {
+    let bg = document.getElementById("bg").value;
+    let urlBg = "src/bg/" + bg + ".jpg";
+    document.body.style.backgroundImage = ("url("+urlBg+")");
+}
+
+function changeStyle() {
+    let style = document.getElementById("style").value;
+    let cards = document.getElementsByClassName("card");
+    let cardsQ = cards.length;
+    for (let i = 0; i < cardsQ; i++) {
+        for (let i2 = 1; i2 <= 3; i2++) {
+            cards[i].classList.remove("card-style_" + i2);
+        }
+        cards[i].classList.add("card-style_" + style);
+    }
+    let shown = document.getElementsByClassName("card-rotate_show180");
+    let shownL = shown.length;
+    if ( shownL >= 1 ) {
+        for (let i = 0 ; i < shownL ; i++) {
+            let shownCard = shown[0];
+            let shownCardId = shownCard.id;
+                document.getElementById(shownCardId).classList.remove("card-rotate_show180");
+                document.getElementById(shownCardId).classList.add("card-rotate_hide90");
+                hideCard(shownCardId);
+        }
+    }
+}
+
 function startTimer() {
     if ( document.getElementsByClassName("card").length >= 1 ) {
-        GlobTimeS++;
-        document.getElementById("play-time").innerText = GlobTimeS;
+        if ( GlobTimeS < 59 ) {
+            GlobTimeS++;
+        } else {
+            GlobTimeS = 0;
+            GlobTimeM++;
+        }
+        let Tsec = GlobTimeS < 10 ? '0' + GlobTimeS : GlobTimeS;
+        let Tmin = GlobTimeM < 10 ? '0' + GlobTimeM : GlobTimeM;
+        document.getElementById("play-time-min").innerText = Tmin;
+        document.getElementById("play-time-sec").innerText = Tsec;
     }
     if ( GlobResultP !== 0) {
-        let spp = GlobTimeS / GlobResultP;
+        let spp = (( 60 * GlobTimeM) + GlobTimeS ) / GlobResultP;
         document.getElementById("result").innerText = GlobResultP;
         document.getElementById("sec-per-pair").innerText = spp.toFixed(2);
     }
 }
-
-$(document).ready(function() {
-    $("button").on("click", function() {
-        GameArea();
-        showMenu();
-    });
-    $("#menu-button").on("click", function() {
-        showMenu();
-    });
-    $("#bg").on("change", function() {
-        changeBg();
-    });
-    $("#style").on("change", function() {
-        changeStyle();
-    });
-    $("#cards_quantity").on("change", function() {
-        GameArea();
-        showMenu();
-    });
-    $("#close_menu").on("click", function() {
-        showMenu();
-    });
-});
-
-$(window).resize(function() {
-    cardsScaling();
-});
 
 function showMenu() {
     var box = document.getElementById("menu");
@@ -144,16 +146,12 @@ function showMenu() {
     }
 }
 
-
-function cardsScaling() {
-    if( document.getElementById("shadow_box") ) {
-    document.getElementById("shadow_box").style.width = "100vh";
-    }
+function areaScaling() {
     if( !document.getElementById("end-box") ) {
         var cardWidth = cardMaxWidth;
         var cardHeight = cardMaxHeight;
-        var cardGetWidth = document.getElementsByClassName("card")[0].style.width ?? cardMaxWidth;
-        var cardGetHeight = document.getElementsByClassName("card")[0].style.height ?? cardMaxHeight;
+        var cardGetWidth = document.getElementsByClassName("card")[0].style.width /*?? cardMaxWidth*/;
+        var cardGetHeight = document.getElementsByClassName("card")[0].style.height /*?? cardMaxHeight*/;
         if( !cardGetWidth || !cardGetHeight || cardGetWidth == '' || cardGetHeight == '' ) {
             cardGetWidth = cardMaxWidth;
             cardGetHeight = cardMaxHeight;
@@ -196,7 +194,7 @@ function cardsScaling() {
                         document.getElementsByClassName("card-place")[i].style.height = (cardMaxHeight + "px");
                     }
                     resizeDone = true;
-                    cardsScaling();
+                    areaScaling();
                } else {
                    resizeDone = true;
                }
@@ -222,6 +220,15 @@ function cardsScaling() {
     }
     viewH = document.body.clientHeight;
     viewV = document.body.clientWidth;
+    if ( viewV <= 610 ) {
+        document.getElementById("play-time-label").innerText = " Time: ";
+        document.getElementById("result-label").innerText = " Pairs: ";
+        document.getElementById("sec-per-pair-label").innerText = " SPP: ";
+    } else {
+        document.getElementById("play-time-label").innerText = " Play time: ";
+        document.getElementById("result-label").innerText = " Result(pairs): ";
+        document.getElementById("sec-per-pair-label").innerText = " Seconds per pair: ";
+    }
 }
 
 function cardClick() {
@@ -244,12 +251,23 @@ function cardClick() {
                 shownCard = shown[1];
             }
         }
+    } else if ( shownL > 2) {
+        shownTwo = false;
+        for ( let i = 0 ; i < shownL ; i++ ) {
+            let shownCard = shown[0];
+            let shownCardId = shownCard.id;
+                document.getElementById(shownCardId).classList.remove("card-rotate_show180");
+                document.getElementById(shownCardId).classList.add("card-rotate_hide90");
+                hideCard(shownCardId);
+        }
     } else {
         shownTwo = false;
     }
     let getClass = this.className;
     if ( getClass.includes("card-rotate_show180") == true && shownTwo == false ) {
+        this.classList.remove("card-rotate_show90");
         this.classList.remove("card-rotate_show180");
+        this.classList.remove("card-rotate_hide180");
         this.classList.add("card-rotate_hide90");
         hideCard(this.id);
     } else if ( getClass.includes("card-rotate_show180") == true && shownTwo == true ) {
@@ -259,6 +277,9 @@ function cardClick() {
         this.classList.add("card-rotate_show90");
         showCard(this.id);
     } else {
+        this.classList.remove("card-rotate_hide90");
+        this.classList.remove("card-rotate_hide180");
+        this.classList.remove("card-rotate_show180");
         this.classList.add("card-rotate_show90");
         showCard(this.id);
     }
@@ -275,7 +296,7 @@ function showCard(cardId) {
             let cardno = document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].innerText;
             document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundImage = ("url('src/cards/3/" + cardno +".jpg')");
             document.getElementById(cardId).getElementsByClassName("card-inner")[0].style.backgroundSize = ("100%");
-            
+
             } else {
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.color= "#000000";
             document.getElementById(cardId).getElementsByClassName("card-inner-span")[0].style.fontSize= "40px";
@@ -302,7 +323,6 @@ function hideCard( cardId ) {
     });
 }
 
-
 function checkPairs( cardId ) {
     let shown2 = document.getElementsByClassName("card-rotate_show180");
     let shownL2 = shown2.length;
@@ -326,9 +346,11 @@ function checkPairs( cardId ) {
 }
 
 function gameEnd() {
-    let vSPP = GlobTimeS / GlobResultP;
+    let vSPP = (( 60 * GlobTimeM) + GlobTimeS ) / GlobResultP;
     let vCardsNumber = document.getElementById("cards_quantity").value;
     let vPairsNumber = parseFloat(vCardsNumber)/2;
+    let Tsec = GlobTimeS < 10 ? '0' + GlobTimeS : GlobTimeS;
+    let Tmin = GlobTimeM < 10 ? '0' + GlobTimeM : GlobTimeM;
     endBox = document.createElement("div");
     endBox.id = ("end-box");
     endBoxInner = document.createElement("div");
@@ -341,7 +363,7 @@ function gameEnd() {
     endBoxInner.appendChild(endBoxInnerHead);
     endBoxInnerBody = document.createElement("div");
     endBoxInnerBody.id = ("end-box-inner_body");
-    endBoxInnerBody.innerText = ("Time: " + GlobTimeS + "s | Pairs: " + GlobResultP + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP.toFixed(2));
+    endBoxInnerBody.innerText = ("Time: " + Tmin + ":" + Tsec + " | Pairs: " + GlobResultP + " | Cards: " + vCardsNumber + " | Seconds per pair: " + vSPP.toFixed(2));
     endBoxInner.appendChild(endBoxInnerBody);
     document.body.appendChild(endBox);
 }
